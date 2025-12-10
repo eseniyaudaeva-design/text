@@ -71,7 +71,7 @@ def generate_unique_text(base_text, tag_name):
 
     try:
         response = client.chat.completions.create(
-            model="llama-3.1-sonar-large-128k-online",
+            model="sonar-pro",
             messages=[
                 {"role": "system", "content": system_instruction},
                 {"role": "user", "content": user_prompt}
@@ -105,4 +105,5 @@ if tags and base_text_content:
 else:
     print("Ошибка: Теги или текст не найдены.")
     # Создаем пустой файл, чтобы Action не падал при загрузке артефакта
+
     pd.DataFrame().to_excel('seo_texts_result.xlsx')

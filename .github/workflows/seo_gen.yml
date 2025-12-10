@@ -1,0 +1,38 @@
+name: Генератор SEO текстов
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'Вставьте ссылку на категорию'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Скачиваем репозиторий
+        uses: actions/checkout@v3
+
+      - name: Настройка Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Установка библиотек
+        run: |
+          pip install -r requirements.txt
+
+      - name: Запуск скрипта
+        env:
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          INPUT_URL: ${{ inputs.target_url }}
+        run: python main.py
+
+      - name: Скачать результат (Artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: SEO-Texts-Result
+          path: seo_texts_result.xlsx
